@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.UI;
 
 //ensures that these components are attached to the gameobject
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(Animator))]
@@ -188,4 +189,23 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+    public void WallJump(Collider2D collision)
+    {
+        if (Input.GetButtonDown("right") && collision.CompareTag("WallJump"))
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            }
+
+
+            if (TestMode)
+            {
+                Debug.Log("The WalJump Trigger has Acitvated");
+            }
+        }
+
+       
+    }
+
 }
