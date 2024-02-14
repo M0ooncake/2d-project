@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +11,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    private float xInput;
     public bool TestMode = false;
     public Rigidbody2D projectile;
     public float projectileSpeed;
@@ -16,11 +19,19 @@ public class PlayerController : MonoBehaviour
     public Transform spawnPointRight;
     public Transform spawnPointTop;
     public Transform spawnPointBottom;
-
     public Projectile projectilePrefab;
     public GameObject obj;
-   
-// movement Vars
+    private bool isWallSliding;
+    private float wallSlidingSpeed = 2f;
+    private int _lives;
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpCounter;
+    private float wallJumpDuration = 0.4f;
+    private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+
+    // movement Vars
     [SerializeField] private float speed = 7.0f;
     [SerializeField] private float JumpForce = 30.0f;
 
@@ -28,8 +39,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private LayerMask isGroundLayer;
     [SerializeField] private float groundCheckRadius = 0.02f;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
 
-    private int _lives;
+    
     [SerializeField] private int _maxLives = 5;
     public int lives
     {
@@ -105,13 +118,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float xInput = Input.GetAxisRaw("Horizontal");
+        
+        
+        xInput = Input.GetAxisRaw("Horizontal");
         float yInput = Input.GetAxisRaw("Vertical");
         AnimatorClipInfo[] clipifo = anim.GetCurrentAnimatorClipInfo(0);
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, groundCheckRadius, isGroundLayer);
 
         rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
         //rb.AddForce();
+        
 
         if (Input.GetButtonDown("Fire1"))
         {
@@ -174,8 +190,9 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("IsLookingDown", false);
             anim.SetBool("IsLookingUp", false);
         }
-      
 
+        WallSlide();
+        WallJump();
     }
     public void Fire(Vector2 dir, Transform spawnPoints)
     {
@@ -189,23 +206,51 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-    public void WallJump(Collider2D collision)
+
+    private bool IsWalled()
     {
-        if (Input.GetButtonDown("right") && collision.CompareTag("WallJump"))
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+    }
+    private void WallSlide()
+    {
+        float yInput = Input.GetAxisRaw("Vertical");
+        xInput = Input.GetAxisRaw("Horizontal");
+        if (IsWalled() && !isGrounded && xInput != 0f)
         {
-            if (Input.GetButtonDown("Jump"))
-            {
-                rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
-            }
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+        else isWallSliding = false;
 
+        if (Input.GetButtonDown("Jump") && wallJumpCounter > 0f)
+        {
+            isWallJumping = true;
 
-            if (TestMode)
-            {
-                Debug.Log("The WalJump Trigger has Acitvated");
-            }
+            rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+           
+            rb.velocity = new Vector2(-xInput * 100, rb.velocity.y);
+
+        }
+        Invoke(nameof(StopWallJumping), wallJumpDuration);
+    }
+    private void StopWallJumping()
+    {
+        isWallJumping = false;
+    }
+    private void WallJump()
+    {
+        if(isWallSliding)
+        {
+            isWallJumping = false;
+            wallJumpingDirection = -xInput;
+            wallJumpCounter = wallJumpingTime;
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumpCounter -= Time.deltaTime;
+
         }
 
-       
     }
-
 }
