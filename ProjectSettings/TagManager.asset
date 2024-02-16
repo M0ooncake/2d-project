@@ -8,6 +8,7 @@ TagManager:
   - Box
   - Floor
   - WallJump
+  - Enemy
   layers:
   - Default
   - TransparentFX
