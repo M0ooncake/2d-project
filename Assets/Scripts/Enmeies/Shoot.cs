@@ -1,39 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
+    public bool TestMode = false;
+
     SpriteRenderer sr;
 
-    public float projectileSpeed;
+    [SerializeField] float initalXVelocity = 7.0f;
+    [SerializeField] float initalYVelocity = 7.0f;
+
     public Transform spawnPointLeft;
     public Transform spawnPointRight;
-    public Transform spawnPointTop;
-    public Transform spawnPointBottom;
 
     public Projectile projectilePrefab;
+
     // Start is called before the first frame update
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
 
-        if (projectileSpeed <= 0 ) 
+        if (!spawnPointLeft || !spawnPointRight || !projectilePrefab)
         {
-            projectileSpeed = 7.0f;
+            if (TestMode) Debug.Log("Set default values Shoot Script. On object " + gameObject.name);
         }
-        if (!spawnPointLeft || !spawnPointRight || !spawnPointTop || !spawnPointBottom || !projectilePrefab)
-        {
 
-        }
-       
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Fire()
@@ -41,11 +33,14 @@ public class Shoot : MonoBehaviour
         if (!sr.flipX)
         {
             Projectile curProjectile = Instantiate(projectilePrefab, spawnPointRight.position, spawnPointRight.rotation);
+            curProjectile.xVel = initalXVelocity;
+            curProjectile.yVel = initalYVelocity;
         }
         else
         {
             Projectile curProjectile = Instantiate(projectilePrefab, spawnPointLeft.position, spawnPointLeft.rotation);
+            curProjectile.xVel = -initalXVelocity;
+            curProjectile.yVel = initalYVelocity;
         }
-
     }
 }

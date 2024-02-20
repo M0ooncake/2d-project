@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
         AnimatorClipInfo[] clipifo = anim.GetCurrentAnimatorClipInfo(0);
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, groundCheckRadius, isGroundLayer);
 
-        rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
+        if (!isWallSliding) rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
         //rb.AddForce();
         
 
@@ -209,26 +209,34 @@ public class PlayerController : MonoBehaviour
 
     private bool IsWalled()
     {
+        anim.SetBool("IsSliding", true);
         return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
     }
     private void WallSlide()
     {
         float yInput = Input.GetAxisRaw("Vertical");
         xInput = Input.GetAxisRaw("Horizontal");
-        if (IsWalled() && !isGrounded && xInput != 0f)
+        if (IsWalled() && !isGrounded && xInput != 0)
         {
             isWallSliding = true;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
-        else isWallSliding = false;
+        else
+        {
+            isWallSliding = false;
+            anim.SetBool("IsSliding", false);
+        }
 
         if (Input.GetButtonDown("Jump") && wallJumpCounter > 0f)
         {
             isWallJumping = true;
 
-            rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
-           
-            rb.velocity = new Vector2(-xInput * 100, rb.velocity.y);
+            //rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            Vector2 forceVector = sr.flipX ? Vector2.right * 150 : Vector2.left * 150;
+
+
+            rb.AddForce(forceVector + (Vector2.up * JumpForce), ForceMode2D.Impulse);
+            isWallJumping = false;
 
         }
         Invoke(nameof(StopWallJumping), wallJumpDuration);

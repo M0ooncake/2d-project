@@ -27,10 +27,16 @@ public class Projectile : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Enemy") && gameObject.CompareTag("PlayerProjectile"))
+        {
+            gameObject.GetComponent<EnemyBase>().TakeDamage(1);
+        }
         if (collision.gameObject.name != "Player" && collision.gameObject.name != "PlayerProjectile")
         {
             Destroy(gameObject);
         }
+
+        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

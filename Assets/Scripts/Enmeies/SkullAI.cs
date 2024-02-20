@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkullAI : MonoBehaviour
+public class SkullAI : EnemyBase
 {
     public Rigidbody2D rb;
-    SpriteRenderer sr;
-    public int HealthPoints = 2;
+    //SpriteRenderer sr;
+    //public int HealthPoints = 2;
     public float speed = 2;
     public GameObject PointA;
     public GameObject PointB;
-    public Animator anim;
+    //public Animator anim;
     public Transform currentPoint;
     public Transform target;
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
@@ -61,6 +62,18 @@ public class SkullAI : MonoBehaviour
         Gizmos.DrawWireSphere(PointA.transform.position, 0.5f);
         Gizmos.DrawWireSphere(PointB.transform.position, 0.5f);
         Gizmos.DrawLine(PointA.transform.position, PointB.transform.position); 
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        //ceate a dmg fucntiuon that will delete the path points it uses too
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject.transform.parent.gameObject, 2);
+
+        }
+        //base.TakeDamage(damage);
     }
 
 }
