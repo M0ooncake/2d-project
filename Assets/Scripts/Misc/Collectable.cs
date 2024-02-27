@@ -35,7 +35,7 @@ public class Collectable : MonoBehaviour
                 case PickupType.Powerup:
                     break;
                 case PickupType.Life:
-                    pc.lives++;
+                    //GameManager.Instantiate.lives
                     //and a bunch of other stuff to make the particle to be displayed around the player
                     break;
                 case PickupType.Score:

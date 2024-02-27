@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkullAI : EnemyBase
+public class SkullAI : EnemyBase, IEnemy
 {
     public Rigidbody2D rb;
     //SpriteRenderer sr;
@@ -13,6 +13,8 @@ public class SkullAI : EnemyBase
     //public Animator anim;
     public Transform currentPoint;
     public Transform target;
+    public int Skullhealth = 2;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -64,13 +66,13 @@ public class SkullAI : EnemyBase
         Gizmos.DrawLine(PointA.transform.position, PointB.transform.position); 
     }
 
-    public override void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         //ceate a dmg fucntiuon that will delete the path points it uses too
-        health -= damage;
-        if (health <= 0)
+        Skullhealth -= damage;
+        if (Skullhealth <= 0)
         {
-            Destroy(gameObject.transform.parent.gameObject, 2);
+            Destroy(gameObject.transform.parent.gameObject);
 
         }
         //base.TakeDamage(damage);

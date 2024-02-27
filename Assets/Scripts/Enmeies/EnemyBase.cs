@@ -26,15 +26,5 @@ public abstract class EnemyBase : MonoBehaviour
     {
         
     }
-    public virtual void TakeDamage(int damage)
-    {
-        health -= damage;
 
-        if (health <= 0)
-        {
-            anim.SetTrigger("Death");
-            Destroy(gameObject, 2);
-        }
-
-    }
 }

@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 5187733107810767304}
   - component: {fileID: 8347624380624225489}
   - component: {fileID: 3930555126124802631}
+  - component: {fileID: 5596732573142236886}
+  - component: {fileID: 5795751437540344921}
   m_Layer: 0
   m_Name: Goat
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +129,54 @@ MonoBehaviour:
   spawnPointLeft: {fileID: 8072899724692535179}
   spawnPointRight: {fileID: 8293781838680327844}
   projectilePrefab: {fileID: -4387299957097709694, guid: e5eb67f71cb53a44a88c3a9b558fc173, type: 3}
+--- !u!114 &5596732573142236886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2835600288264718150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b30989897842b0e46910aa63b39a417f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileFireRate: 0
+--- !u!58 &5795751437540344921
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2835600288264718150}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
 --- !u!1 &4237426155729746280
 GameObject:
   m_ObjectHideFlags: 0

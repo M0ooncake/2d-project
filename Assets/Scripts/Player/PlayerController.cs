@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public GameObject obj;
     private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
-    private int _lives;
+    
     private bool isWallJumping;
     private float wallJumpingDirection;
     private float wallJumpingTime = 0.2f;
@@ -39,32 +39,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private LayerMask isGroundLayer;
     [SerializeField] private float groundCheckRadius = 0.02f;
-    [SerializeField] private Transform wallCheck;
+    [SerializeField] private Transform RightWallCheck;
+    [SerializeField] private Transform LeftWallCheck;
     [SerializeField] private LayerMask wallLayer;
 
     
-    [SerializeField] private int _maxLives = 5;
-    public int lives
-    {
-        get => _lives;
-
-        set
-        {
-            //if (_lives > value)
-            //we lost a life
-            //respawn now
-
-            _lives = value;
-
-            //if (_lives > maxLives)
-            //weve increased passed the max so we should only set it to the max
-            //_lives = maxLives
-
-            //if (_lives <= 0)
-            //GG no re
-            if (TestMode) Debug.Log("Lives have been set to: " + _lives.ToString());
-        }
-    }
+    
     
     
    
@@ -210,7 +190,21 @@ public class PlayerController : MonoBehaviour
     private bool IsWalled()
     {
         anim.SetBool("IsSliding", true);
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+
+        // Check if either left or right wall check is colliding with a wall
+        bool isLeftWalled = Physics2D.OverlapCircle(LeftWallCheck.position, 0.2f, wallLayer);
+        bool isRightWalled = Physics2D.OverlapCircle(RightWallCheck.position, 0.2f, wallLayer);
+
+        if (isLeftWalled)
+        {
+            sr.flipX = false;
+        }
+        if (isRightWalled)
+        {
+            sr.flipX = true;
+        }
+
+        return isLeftWalled || isRightWalled;
     }
     private void WallSlide()
     {
@@ -232,7 +226,7 @@ public class PlayerController : MonoBehaviour
             isWallJumping = true;
 
             //rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
-            Vector2 forceVector = sr.flipX ? Vector2.right * 150 : Vector2.left * 150;
+            Vector2 forceVector = sr.flipX ? -Vector2.right * 50 : -Vector2.left * 50;
 
 
             rb.AddForce(forceVector + (Vector2.up * JumpForce), ForceMode2D.Impulse);
@@ -260,5 +254,46 @@ public class PlayerController : MonoBehaviour
 
         }
 
+    }
+    //trigger functions are called most other times - but would still require at least one object to be physics enabled
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("EnemyProjectile") || collision.CompareTag("Enemy"))
+        {
+            GameManager.Instance.lives--;
+        }
+        
+       
+        
+        if (collision.CompareTag("Fairy"))
+        {
+            GameManager.Instance.lives++;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+
+    }
+
+    //Collision functions are only called - when one of the two objects is a dynamic rigidbody
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
     }
 }

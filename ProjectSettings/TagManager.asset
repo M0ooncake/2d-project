@@ -9,6 +9,8 @@ TagManager:
   - Floor
   - WallJump
   - Enemy
+  - EnemyProjectile
+  - Fairy
   layers:
   - Default
   - TransparentFX

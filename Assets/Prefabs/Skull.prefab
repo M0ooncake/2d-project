@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1640729375306096449}
   m_Layer: 0
   m_Name: Skull
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,6 +148,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5393393294829427084, guid: d24e59ef2c7bffd438ca7b4e0dd260fc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8826663452320934009, guid: d24e59ef2c7bffd438ca7b4e0dd260fc, type: 3}
       propertyPath: PointA
       value: 
@@ -159,8 +163,51 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1760462170591285641, guid: d24e59ef2c7bffd438ca7b4e0dd260fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6963143126278832848}
   m_SourcePrefab: {fileID: 100100000, guid: d24e59ef2c7bffd438ca7b4e0dd260fc, type: 3}
+--- !u!1 &1891801236634500013 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1760462170591285641, guid: d24e59ef2c7bffd438ca7b4e0dd260fc, type: 3}
+  m_PrefabInstance: {fileID: 157463499111737892}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &6963143126278832848
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891801236634500013}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!4 &2891573239766268109 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3030784823845065449, guid: d24e59ef2c7bffd438ca7b4e0dd260fc, type: 3}
