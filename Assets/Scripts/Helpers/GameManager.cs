@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 [DefaultExecutionOrder(-1)]
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class GameManager : MonoBehaviour
     public int TestVar = 500;
     [SerializeField] PlayerController playerPrefab;
     [SerializeField] private int _maxLives = 5;
+
+ 
+    public UnityEvent<int> OnLivesChange;
     public PlayerController PlayerInstance => playerInstance;
     PlayerController playerInstance = null;
     
@@ -43,10 +47,15 @@ public class GameManager : MonoBehaviour
             }
 
             if (TestMode) Debug.Log("Lives has been set to: " + _lives.ToString());
+            
+            OnLivesChange?.Invoke(_lives);
         }
     }
 
-
+    public void ChangeScene(int buildIndex)
+    {
+        SceneManager.LoadScene(buildIndex);
+    }
 
     private int _score = 0;
     public int score

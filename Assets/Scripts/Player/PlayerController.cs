@@ -9,8 +9,10 @@ using UnityEngine.UI;
 
 //ensures that these components are attached to the gameobject
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(Animator))]
+
 public class PlayerController : MonoBehaviour
 {
+    public bool isPaused = false;
     private float xInput;
     public bool TestMode = false;
     public Rigidbody2D projectile;
@@ -94,11 +96,17 @@ public class PlayerController : MonoBehaviour
             if (TestMode) Debug.Log("Groundcheck Object is created" + obj.name);
         }
     }
-
+    
+    
     // Update is called once per frame
     void Update()
     {
         
+        if (Time.timeScale == 0.0f)
+        {
+            //do nothing
+            return;
+        }
         
         xInput = Input.GetAxisRaw("Horizontal");
         float yInput = Input.GetAxisRaw("Vertical");
@@ -107,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
         if (!isWallSliding) rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
         //rb.AddForce();
-        
+
 
         if (Input.GetButtonDown("Fire1"))
         {
@@ -132,27 +140,27 @@ public class PlayerController : MonoBehaviour
                     anim.SetTrigger("IsCasting");
                     Fire(Vector2.right, spawnPointRight);
                 }
-             
+
             }
 
         }
-       
+
 
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
         }
-    
+
         // anim.GetBool will return true or false
         anim.SetBool("IsGrounded", isGrounded);
 
-        anim.SetFloat("Speed", Mathf.Abs(xInput)); 
+        anim.SetFloat("Speed", Mathf.Abs(xInput));
 
         //if (xInput > 0) sr.flipX = false; // moving right it will flip to look right
         //if (xInput < 0) sr.flipX = true; // moving left it will flip to look left
         if (xInput != 0) sr.flipX = (xInput < 0);
-        
+
         if (yInput > 0)
         {
             anim.SetBool("IsLookingUp", true);
@@ -173,6 +181,8 @@ public class PlayerController : MonoBehaviour
 
         WallSlide();
         WallJump();
+        
+       
     }
     public void Fire(Vector2 dir, Transform spawnPoints)
     {
