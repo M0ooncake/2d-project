@@ -6,6 +6,9 @@ public abstract class EnemyBase : MonoBehaviour
 {
     protected SpriteRenderer sr;
     protected Animator anim;
+    [SerializeField] public AudioClip hitSound;
+    [SerializeField] public AudioClip deathSound;
+
 
     protected int health;
     protected int maxHealth;

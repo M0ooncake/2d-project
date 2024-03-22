@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public int TestVar = 500;
     [SerializeField] PlayerController playerPrefab;
     [SerializeField] private int _maxLives = 5;
-
+    [SerializeField] AudioClip damageSound;
  
     public UnityEvent<int> OnLivesChange;
     public PlayerController PlayerInstance => playerInstance;
@@ -33,7 +33,9 @@ public class GameManager : MonoBehaviour
             if (_lives > value)
             {
                 // Respawn the player
-                Respawn();
+                
+                StartCoroutine(Respawn());
+                //Respawn();
             }
 
             // Update the number of lives
@@ -114,10 +116,21 @@ public class GameManager : MonoBehaviour
         currentCheckpoint = updatedCheckpoint;
     }
 
-    void Respawn()
+    IEnumerator Respawn()
     {
+        GetComponent<AudioSource>().PlayOneShot(damageSound);
+        //playerInstance.GetComponent<BoxCollider2D>().enabled = false; // Disable the BoxCollider2D
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(1);
         playerInstance.transform.position = currentCheckpoint.position;
+        //playerInstance.GetComponent<BoxCollider2D>().enabled = true; // enable the BoxCollider2D
     }
+    /*void Respawn()
+    {
+
+        SceneManager.LoadScene(1);
+        playerInstance.transform.position = currentCheckpoint.position;
+    }*/
     void GameOver()
     {
         _lives = _maxLives;

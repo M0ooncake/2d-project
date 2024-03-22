@@ -9,7 +9,7 @@ public class Goat : EnemyBase
 
     float timeSinceLastFire = 0;
     float DistThreshold = 3.0f;
-
+    public int goatHealth = 3;
     protected override void Start()
     {
         base.Start();
@@ -50,5 +50,20 @@ public class Goat : EnemyBase
         else sr.flipX = false;
 
         //if (player.transform.position.x > )
+    }
+    public void TakeDamage(int damage)
+    {
+        //ceate a dmg fucntiuon that will delete the path points it uses too
+        goatHealth -= damage;
+        GetComponent<AudioSource>().PlayOneShot(hitSound);
+        if (goatHealth <= 0)
+        {
+            GetComponent<AudioSource>().PlayOneShot(deathSound);
+            //GetComponent<SpriteRenderer>().enabled = false;
+            Destroy(gameObject.transform.parent.gameObject, deathSound.length);
+
+
+        }
+        //base.TakeDamage(damage);
     }
 }

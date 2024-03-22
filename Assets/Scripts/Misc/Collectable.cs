@@ -11,8 +11,8 @@ public class Collectable : MonoBehaviour
         Score,
     }
 
-   [SerializeField] PickupType currentPickup;
-
+    [SerializeField] PickupType currentPickup;
+    [SerializeField] AudioClip pickupSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +41,9 @@ public class Collectable : MonoBehaviour
                 case PickupType.Score:
                     break;
             }
-            Destroy(gameObject);
+            GetComponent<AudioSource>().PlayOneShot(pickupSound);
+            GetComponent<SpriteRenderer>().enabled = false;
+            Destroy(gameObject, pickupSound.length);
         }
     }
     

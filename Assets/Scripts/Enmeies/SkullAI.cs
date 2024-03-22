@@ -70,9 +70,13 @@ public class SkullAI : EnemyBase, IEnemy
     {
         //ceate a dmg fucntiuon that will delete the path points it uses too
         Skullhealth -= damage;
+        GetComponent<AudioSource>().PlayOneShot(hitSound);
         if (Skullhealth <= 0)
         {
-            Destroy(gameObject.transform.parent.gameObject);
+            GetComponent<AudioSource>().PlayOneShot(deathSound);
+            //GetComponent<SpriteRenderer>().enabled = false;
+            Destroy(gameObject.transform.parent.gameObject, deathSound.length);
+            
 
         }
         //base.TakeDamage(damage);
