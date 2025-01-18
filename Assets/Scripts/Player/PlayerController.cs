@@ -32,10 +32,10 @@ public class PlayerController : MonoBehaviour
     private bool isWallSlideParticlesActive = false;
     private bool isWallJumping;
     private float wallJumpingDirection;
-    private float wallJumpingTime = 0.02f;
+    private float wallJumpingTime = 0.05f;
     private float wallJumpCounter;
     private float wallJumpDuration = 0.4f;
-    private Vector2 wallJumpingPower = new Vector2(90f, 16f);
+    private Vector2 wallJumpingPower = new Vector2(30f, 16f);
 
     // movement Vars
     [SerializeField] private float speed = 7.0f;

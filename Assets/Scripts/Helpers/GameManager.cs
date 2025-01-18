@@ -88,21 +88,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-         if (SceneManager.GetActiveScene().name == "Level")
-            {
-                SceneManager.LoadScene(0);
-                
-            } 
-         else if (SceneManager.GetActiveScene().name == "GameOver")
-            {
-                SceneManager.LoadScene(0);
-            }
-         else 
-                SceneManager.LoadScene(1);
-
-        }
+        
     }
     public void SpawnPlayer(Transform spawnLocation)
     {
